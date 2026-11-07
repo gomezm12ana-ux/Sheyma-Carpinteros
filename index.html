@@ -80,7 +80,11 @@ footer a { color: var(--band-fg); }
 .hero h1 { font-size: clamp(2.6rem, 6.4vw, 4.8rem); font-weight: 700; letter-spacing: -.01em; }
 .hero h1 em { font-style: normal; color: var(--wood); }
 .hero h1 .nw { display: inline-block; white-space: nowrap; }
-.hero h1 { font-size: clamp(2rem, 4.6vw, 3.6rem); line-height: 1.08; }
+@media (max-width: 560px) { .hero h1 .nw { white-space: normal; display: inline; } .hero h1 em.nw { display: block; } .hero h1 { font-size: clamp(2.1rem, 10vw, 3rem); } }
+.hero h1 { font-size: clamp(2.6rem, 7.4vw, 6rem); line-height: 1.02; letter-spacing: -.015em; }
+.hero .wrap { grid-template-columns: 1fr; }
+.hero-text { gap: 28px; }
+.hero { padding-block: clamp(64px, 11vw, 140px) clamp(56px, 9vw, 112px); }
 .hero h1 em { display: block; font-weight: 500; }
 .hero h1 em.madera {
   background-color: var(--wood);
@@ -91,7 +95,7 @@ footer a { color: var(--band-fg); }
   filter: drop-shadow(0 1.5px 0 rgba(90,52,20,.45));
 }
 .hero-text { display: grid; gap: 22px; min-width: 0; }
-.hero-text p.lead { font-size: 1.15rem; color: var(--muted); max-width: 52ch; }
+.hero-text p.lead { font-size: clamp(1.1rem, 1.6vw, 1.3rem); color: var(--muted); max-width: 60ch; }
 .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
 .btn { display: inline-block; padding: 13px 22px; border-radius: 4px; font-weight: 600; text-decoration: none; border: 2px solid var(--accent); font-size: 1rem; cursor: pointer; font-family: var(--font-body); }
 .btn-primary { background: var(--accent); color: var(--accent-fg); }
@@ -228,16 +232,7 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
         </div>
         <p class="hero-phone">O llámanos al <a href="tel:+34914989264">914 98 92 64</a></p>
       </div>
-      <aside class="hero-card" aria-label="Datos del taller">
-        <span class="label">Taller propio</span>
-        <dl>
-          <div><dt>Dirección</dt><dd>Av. de la Industria, 27<br>28970 Humanes de Madrid</dd></div>
-          <div><dt>Teléfono</dt><dd><a href="tel:+34914989264">914 98 92 64</a></dd></div>
-          <div><dt>Correo</dt><dd><a href="mailto:info@sheymacarpinteros.com">info@sheymacarpinteros.com</a></dd></div>
-          <div><dt>Horario</dt><dd>Lunes a viernes, 8:00–18:00</dd></div>
-        </dl>
-        <a class="btn btn-primary" href="#contacto">Solicitar visita</a>
-      </aside>
+      
     </div>
   </div>
   <div class="ruler" aria-hidden="true"></div>
