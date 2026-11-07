@@ -85,7 +85,7 @@ footer a { color: var(--band-fg); }
   background-size: cover;
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
-  filter: drop-shadow(0 2px 0 rgba(60,32,12,.35));
+  filter: drop-shadow(0 1.5px 0 rgba(90,52,20,.45));
 }
 .hero-text { display: grid; gap: 22px; min-width: 0; }
 .hero-text p.lead { font-size: 1.15rem; color: var(--muted); max-width: 52ch; }
@@ -378,15 +378,38 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
     var r = em.getBoundingClientRect();
     var root = document.documentElement.dataset.theme;
     var dark = root === "dark" || (root !== "light" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
-    var c = document.createElement("canvas");
     try {
-      draw(c, dark ? "tituloOscuro" : "titulo", 21, Math.max(60, r.height), Math.max(200, r.width));
-      var o = document.createElement("canvas");
-      o.width = c.height; o.height = c.width;
-      var g = o.getContext("2d");
-      g.translate(o.width, 0); g.rotate(Math.PI / 2); g.drawImage(c, 0, 0);
-      em.style.backgroundImage = "url(" + o.toDataURL("image/jpeg", 0.85) + ")";
+      var o = fineGrain(Math.max(200, r.width), Math.max(60, r.height), dark);
+      em.style.backgroundImage = "url(" + o.toDataURL("image/jpeg", 0.9) + ")";
     } catch (e) {}
+  }
+  // Veta fina y clara de roble: muchas líneas finas casi horizontales con ondulación suave
+  function fineGrain(cw, ch, dark) {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = Math.round(cw * dpr), h = Math.round(ch * dpr);
+    var c = document.createElement("canvas"); c.width = w; c.height = h;
+    var ctx = c.getContext("2d"), img = ctx.createImageData(w, h), d = img.data;
+    var light = dark ? [236, 196, 140] : [222, 176, 116];
+    var line = dark ? [178, 124, 70] : [158, 104, 54];
+    var rand = rnd(29), rows = [], n = Math.ceil(h / dpr) + 40;
+    for (var k = 0; k < n; k++) rows.push(rand());
+    function rowNoise(v) { var i = Math.floor(v), f = v - i; i = ((i % n) + n) % n; var a = rows[i], b = rows[(i + 1) % n]; return a + (b - a) * (f * f * (3 - 2 * f)); }
+    for (var y = 0; y < h; y++) {
+      for (var x = 0; x < w; x++) {
+        var X = x / dpr, Y = y / dpr;
+        var v = Y + Math.sin(X * 0.011 + 1.3) * 7 + Math.sin(X * 0.031 + Y * 0.05) * 2.2 + Math.sin(X * 0.0047) * 10;
+        var streak = rowNoise(v * 0.55);
+        var fine = Math.pow(Math.abs(Math.sin(v * 1.9)), 14);
+        var band = Math.pow(rowNoise(v * 0.09 + 7), 2) * 0.55;
+        var t = Math.min(1, fine * (0.35 + streak * 0.65) + band * 0.6 + streak * 0.18);
+        var fleck = ((Math.sin(x * 12.9898 + y * 78.233) * 43758.5453) % 1) * 6;
+        var i = (y * w + x) * 4;
+        for (var ch2 = 0; ch2 < 3; ch2++) d[i + ch2] = light[ch2] + (line[ch2] - light[ch2]) * t + fleck;
+        d[i + 3] = 255;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return c;
   }
   function drawAll() {
     woodTitle();
