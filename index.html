@@ -79,6 +79,14 @@ footer a { color: var(--band-fg); }
 .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
 .hero h1 { font-size: clamp(2.6rem, 6.4vw, 4.8rem); font-weight: 700; letter-spacing: -.01em; }
 .hero h1 em { font-style: normal; color: var(--wood); }
+.hero h1 em.madera {
+  background-color: var(--wood);
+  background-image: repeating-linear-gradient(172deg, rgba(60,30,10,.35) 0 2px, transparent 2px 9px, rgba(60,30,10,.18) 9px 11px, transparent 11px 19px);
+  background-size: cover;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  filter: drop-shadow(0 2px 0 rgba(60,32,12,.35));
+}
 .hero-text { display: grid; gap: 22px; min-width: 0; }
 .hero-text p.lead { font-size: 1.15rem; color: var(--muted); max-width: 52ch; }
 .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -200,7 +208,7 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
     <div class="wrap">
       <div class="hero-text">
         <span class="label">Carpintería a medida · Madrid</span>
-        <h1>Muebles hechos al milímetro, <em>con madera de verdad</em></h1>
+        <h1>Muebles hechos al milímetro, <em class="madera">con madera de verdad</em></h1>
         <p class="lead">Diseñamos, fabricamos en nuestro taller y montamos en tu casa cocinas, armarios empotrados, puertas y muebles a medida. También restauramos piezas que merecen otra vida.</p>
         <div class="ctas">
           <a class="btn btn-primary" href="#contacto">Pide presupuesto sin compromiso</a>
@@ -335,9 +343,11 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
     haya:  { base: [214, 168, 128], ring: [176, 124, 86] }
   };
   function rnd(seed) { return function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
-  function draw(canvas, kind, seed) {
+  species.titulo = { base: [184, 116, 60], ring: [104, 58, 26] };
+  species.tituloOscuro = { base: [226, 162, 100], ring: [156, 96, 50] };
+  function draw(canvas, kind, seed, fw, fh) {
     var s = species[kind] || species.roble;
-    var r = canvas.getBoundingClientRect();
+    var r = fw ? { width: fw, height: fh } : canvas.getBoundingClientRect();
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var w = Math.max(60, Math.round(r.width * dpr)), h = Math.max(60, Math.round(r.height * dpr));
     canvas.width = w; canvas.height = h;
@@ -359,8 +369,24 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
     }
     ctx.putImageData(img, 0, 0);
   }
+  function woodTitle() {
+    var em = document.querySelector("em.madera");
+    if (!em) return;
+    var r = em.getBoundingClientRect();
+    var root = document.documentElement.dataset.theme;
+    var dark = root === "dark" || (root !== "light" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    var c = document.createElement("canvas");
+    try {
+      draw(c, dark ? "tituloOscuro" : "titulo", 21, Math.max(60, r.height), Math.max(200, r.width));
+      var o = document.createElement("canvas");
+      o.width = c.height; o.height = c.width;
+      var g = o.getContext("2d");
+      g.translate(o.width, 0); g.rotate(Math.PI / 2); g.drawImage(c, 0, 0);
+      em.style.backgroundImage = "url(" + o.toDataURL("image/jpeg", 0.85) + ")";
+    } catch (e) {}
+  }
   function drawAll() {
-    
+    woodTitle();
     document.querySelectorAll("canvas[data-wood]").forEach(function (c, i) {
       draw(c, c.dataset.wood, Number(c.dataset.seed) || i + 2);
     });
