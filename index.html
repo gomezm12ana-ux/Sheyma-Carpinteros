@@ -537,6 +537,32 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
 </div>
 <script>
 (function () {
+  // Abrir siempre la web desde arriba, aunque el móvil recuerde la última posición o un #enlace
+  try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+  function arriba() {
+    if (location.hash) { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} }
+    window.scrollTo(0, 0);
+  }
+  arriba();
+  window.addEventListener("load", arriba);
+  window.addEventListener("pageshow", function (e) { if (e.persisted) arriba(); });
+  // Los enlaces del menú bajan a su sección sin dejar el #enlace en la dirección
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute("href").slice(1);
+    var destino = id ? document.getElementById(id) : null;
+    if (!destino && id !== "inicio") return;
+    e.preventDefault();
+    if (id === "inicio" || !destino) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+    var cab = document.querySelector("header");
+    var y = destino.getBoundingClientRect().top + window.scrollY - (cab ? cab.offsetHeight : 0);
+    window.scrollTo({ top: y, behavior: "smooth" });
+  });
+})();
+</script>
+<script>
+(function () {
   var species = {
     roble: { base: [196, 154, 104], ring: [150, 108, 64] },
     nogal: { base: [112, 74, 48],  ring: [70, 44, 28] },
