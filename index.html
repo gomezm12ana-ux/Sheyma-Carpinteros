@@ -422,7 +422,6 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
       <div class="pie"><span class="pie-plano">COCINA CON PENÍNSULA · ALZADO · E 1:30 · COTAS EN MM</span><span class="pie-real">PROYECTO REAL · COCINA CON PENÍNSULA · MADRID 2025 · <a href="https://www.instagram.com/sheymacarpinteros/" target="_blank" rel="noopener">VER EN INSTAGRAM</a></span></div>
       <div class="acciones-escena">
         <button class="ver-proyecto" type="button" id="ver-proyecto">Ver proyecto terminado</button>
-        <button class="repetir" type="button" id="repetir" aria-label="Repetir el montaje" title="Repetir el montaje"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 4v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
     </div>
       
@@ -583,10 +582,7 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
   function abrirVisor() { ultimoFoco = document.activeElement; visor.hidden = false; document.body.style.overflow = "hidden"; document.getElementById("visor-cerrar").focus(); }
   function cerrarVisor() { visor.hidden = true; document.body.style.overflow = ""; if (ultimoFoco) ultimoFoco.focus(); }
   document.addEventListener("click", function (e) {
-    if (e.target.closest("#repetir")) {
-      var esc = document.querySelector(".escena"), nuevo = esc.cloneNode(true);
-      esc.parentNode.replaceChild(nuevo, esc);
-    } else if (e.target.closest("#ver-proyecto")) {
+    if (e.target.closest("#ver-proyecto")) {
       abrirVisor();
     } else if (e.target.closest("#visor-cerrar") || e.target === visor) {
       cerrarVisor();
