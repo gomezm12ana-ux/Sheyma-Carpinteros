@@ -263,11 +263,6 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
 @keyframes montar { to { clip-path: inset(0 0 0 0); } }
 @keyframes escanear { 0% { opacity: 1; transform: translateY(540px); } 92% { opacity: 1; } 100% { opacity: 0; transform: translateY(10px); } }
 @keyframes atenuar { to { opacity: .1; } }
-.pie { position: relative; height: 1.4em; margin-top: 8px; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; color: #9AA59C; text-align: center; }
-.pie span { position: absolute; inset: 0; }
-.pie-real { opacity: 0; color: #E0A86E; animation: aparece .5s ease 2.3s forwards; }
-.pie-real a { color: inherit; text-decoration: underline; text-underline-offset: 3px; pointer-events: auto; }
-.pie-plano { animation: desaparece .3s ease 2.1s forwards; }
 @keyframes desaparece { to { opacity: 0; } }
 .repetir { position: absolute; right: 0; top: 0; font: 500 .75rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: #B7C0B8;
   background: rgba(23,28,24,.7); border: 1px solid rgba(238,241,236,.2); border-radius: 999px; padding: 8px 12px; cursor: pointer; opacity: 0; animation: aparece .6s ease 6s forwards; }
@@ -277,7 +272,6 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
   .cocina .real { animation: none; clip-path: none; }
   .cocina .scan { display: none; }
   .cocina .lineas { animation: none; opacity: .14; }
-  .pie-real, .repetir { animation: none; opacity: 1; } .pie-plano { animation: none; opacity: 0; }
 }
 
 /* ===== Móvil: primera pantalla con titular + cocina ===== */
@@ -294,10 +288,6 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
   .hero .wrap { align-items: stretch; }
   .hero-text > .label { align-self: flex-start; }
   .escena { display: flex; flex-direction: column; align-items: center; margin-inline: -10px; }
-  .cocina { margin: -4% 0 -2%; }
-  .pie { margin-top: 0; font-size: .62rem; height: auto; min-height: 1.4em; width: 100%; }
-  .pie span { position: static; display: block; }
-  .pie-plano { display: none !important; }
   .repetir { position: static; margin-top: 10px; font-size: .68rem; padding: 7px 12px; }
 }
 @media (max-width: 560px) {
@@ -315,10 +305,6 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
 }
 
 /* ===== Botones bajo la cocina y visor del proyecto ===== */
-.acciones-escena { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 14px; opacity: 0; animation: aparece .4s ease 2.5s forwards; }
-.ver-proyecto { font: 600 .78rem/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: #1B1F1B; background: #E0A86E;
-  border: 0; border-radius: 999px; padding: 12px 18px; cursor: pointer; }
-.ver-proyecto:hover { filter: brightness(1.08); }
 .repetir { position: static; width: 40px; height: 40px; padding: 0; display: inline-grid; place-items: center; border-radius: 50%;
   color: #DDE3DC; background: rgba(23,28,24,.7); border: 1px solid rgba(238,241,236,.28); opacity: 1; animation: none; transform: none; margin: 0; }
 .repetir:hover { color: #fff; border-color: rgba(238,241,236,.6); }
@@ -337,8 +323,23 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
 .visor-pie a { color: #EEF1EC; font-weight: 600; text-decoration: none; border-bottom: 2px solid #E0A86E; }
 .visor-cerrar { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(15,18,15,.75); color: #fff; font-size: 1.6rem; line-height: 1; cursor: pointer; }
 .visor-cerrar:hover { background: rgba(15,18,15,.95); }
-@media (max-width: 900px) { .acciones-escena { margin-top: 10px; } }
-@media (prefers-reduced-motion: reduce) { .acciones-escena { animation: none; opacity: 1; } .visor-caja { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .visor-caja { animation: none; } }
+
+/* ===== Cocina pulsable con sello "Proyecto real" ===== */
+.marco { position: relative; display: block; width: 100%; padding: 0; margin: 0; border: 0; background: none; color: inherit; font: inherit; cursor: zoom-in; border-radius: 6px; }
+.marco:focus-visible { outline: 2px solid #E0A86E; outline-offset: 6px; }
+.marco .cocina { transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+.marco:hover .cocina { transform: scale(1.012); }
+.sello, .ampliar { position: absolute; z-index: 2; opacity: 0; animation: aparece .5s ease 2.3s forwards; pointer-events: none;
+  color: #F3F1EC; background: rgba(18,20,18,.5); border: 1px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.sello { top: calc(3.6% + 12px); left: calc(4.2% + 12px); display: inline-flex; align-items: center; gap: 7px;
+  font: 600 .68rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; padding: 7px 11px 7px 8px; border-radius: 999px; }
+.sello svg { color: #E0A86E; flex: none; }
+.ampliar { right: calc(4.2% + 12px); bottom: calc(1.8% + 12px); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; transition: background .2s ease; }
+.marco:hover .ampliar { background: rgba(18,20,18,.75); }
+@media (max-width: 560px) { .sello { font-size: .6rem; padding: 6px 9px 6px 7px; } .ampliar { width: 30px; height: 30px; } }
+@media (prefers-reduced-motion: reduce) { .sello, .ampliar { animation: none; opacity: 1; } .marco .cocina { transition: none; } }
 </style>
 </head>
 <body>
@@ -375,8 +376,9 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
         </div>
         <p class="hero-phone">O llámanos al <a href="tel:+34914989264">914 98 92 64</a></p>
       </div>
-      <div class="escena" aria-hidden="true">
-      <svg class="cocina" viewBox="0 0 720 560">
+      <div class="escena">
+      <button class="marco" type="button" id="ver-proyecto" aria-label="Ver la foto del proyecto terminado">
+      <svg class="cocina" viewBox="0 0 720 560" aria-hidden="true">
         <defs>
   <filter id="veta" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
     <feTurbulence type="fractalNoise" baseFrequency="0.005 0.2" numOctaves="3" seed="11" result="n"/>
@@ -419,10 +421,9 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
         <rect class="scan" x="20" y="0" width="680" height="3" fill="#FFD9A0"/>
         <g class="lineas"><path class="d fino" pathLength="1" style="--d:0.05s" d="M20 480 H700"/><path class="d grueso" pathLength="1" style="--d:0.11s" d="M50 70 h240 v410 h-240 z"/><path class="d" pathLength="1" style="--d:0.22s" d="M130 70 V470 M210 70 V470"/><path class="d fino" pathLength="1" style="--d:0.28s" d="M50 330 H130 M130 205 H210 M130 330 H210"/><path class="d" pathLength="1" style="--d:0.32s" d="M222 150 h58 v72 h-58 z"/><path class="d" pathLength="1" style="--d:0.35s" d="M222 228 h58 v95 h-58 z"/><path class="d grueso" pathLength="1" style="--d:0.39s" d="M290 352 H670 V470 H290"/><path class="d" pathLength="1" style="--d:0.44s" d="M286 340 H674 V352 H286 Z"/><path class="d fino" pathLength="1" style="--d:0.49s" d="M290 408 H670 M420 352 V470 M540 352 V470"/><path class="d grueso" pathLength="1" style="--d:0.52s" d="M300 100 h170 v145 h-170 z"/><path class="d fino" pathLength="1" style="--d:0.58s" d="M385 100 V245"/><path class="d" pathLength="1" style="--d:0.59s" d="M585 95 h80 v180 h-80 z"/><path class="d fino" pathLength="1" style="--d:0.63s" d="M625 95 V275"/><path class="d fino" pathLength="1" style="--d:0.65s" d="M320 339 H402 M520 339 H580"/><path class="d fino" pathLength="1" style="--d:0.67s" d="M565 340 v-38 q0 -14 -14 -14 q-12 0 -12 12 v6"/><path class="d grueso" pathLength="1" style="--d:0.71s" d="M330 372 H695 V500 H330 Z"/><path class="d fino" pathLength="1" style="--d:0.74s" d="M330 386 H695 M342 386 V500"/><path class="d fino" pathLength="1" style="--d:0.76s" d="M430 20 V132 M396 162 Q398 132 430 132 Q462 132 464 162 Z"/><path class="d fino" pathLength="1" style="--d:0.79s" d="M610 20 V132 M576 162 Q578 132 610 132 Q642 132 644 162 Z"/><path class="d fino" pathLength="1" style="--d:0.80s" d="M386 402 Q384 444 430 450 Q476 444 474 402 Q430 390 386 402 Z"/><path class="d fino" pathLength="1" style="--d:0.84s" d="M418 446 L408 530 M442 446 L452 530"/><path class="d fino" pathLength="1" style="--d:0.83s" d="M496 402 Q494 444 540 450 Q586 444 584 402 Q540 390 496 402 Z"/><path class="d fino" pathLength="1" style="--d:0.86s" d="M528 446 L518 530 M552 446 L562 530"/><path class="d fino" pathLength="1" style="--d:0.86s" d="M606 402 Q604 444 650 450 Q696 444 694 402 Q650 390 606 402 Z"/><path class="d fino" pathLength="1" style="--d:0.89s" d="M638 446 L628 530 M662 446 L672 530"/><path class="oculto" style="--d:0.82s" d="M60 90 H120 M140 90 H200"/><path class="d fino" pathLength="1" style="--d:0.86s" d="M50 50 H670 M50 42 V58 M670 42 V58"/><text style="--d:1.00s" x="360" y="38" text-anchor="middle">4200</text><path class="d fino" pathLength="1" style="--d:0.88s" d="M30 70 V480 M22 70 H38 M22 480 H38"/><text style="--d:1.03s" x="16" y="275" text-anchor="middle" transform="rotate(-90 16 275)">2400</text><path class="d fino" pathLength="1" style="--d:0.89s" d="M330 515 H695 M330 508 V522 M695 508 V522"/><text class="t-peq" style="--d:1.04s" x="512" y="540" text-anchor="middle">PENÍNSULA 2400</text></g>
       </svg>
-      <div class="pie"><span class="pie-plano">COCINA CON PENÍNSULA · ALZADO · E 1:30 · COTAS EN MM</span><span class="pie-real">PROYECTO REAL · COCINA CON PENÍNSULA · MADRID 2025 · <a href="https://www.instagram.com/sheymacarpinteros/" target="_blank" rel="noopener">VER EN INSTAGRAM</a></span></div>
-      <div class="acciones-escena">
-        <button class="ver-proyecto" type="button" id="ver-proyecto">Ver proyecto terminado</button>
-      </div>
+        <span class="sello"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 2.1 3.2-.3.9 3.1 2.8 1.6-1.1 3 1.1 3-2.8 1.6-.9 3.1-3.2-.3L12 22l-2.4-2.1-3.2.3-.9-3.1-2.8-1.6 1.1-3-1.1-3 2.8-1.6.9-3.1 3.2.3z" fill="currentColor"/><path d="M8 12.2l2.7 2.7L16.2 9.4" fill="none" stroke="#171C18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Proyecto real</span>
+        <span class="ampliar" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
     </div>
       
     </div>
