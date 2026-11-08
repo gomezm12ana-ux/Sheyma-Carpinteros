@@ -278,6 +278,40 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
   .cocina .lineas { animation: none; opacity: .14; }
   .pie-real, .repetir { animation: none; opacity: 1; } .pie-plano { animation: none; opacity: 0; }
 }
+
+/* ===== Móvil: primera pantalla con titular + cocina ===== */
+@media (max-width: 900px) {
+  .hero { padding-block: 28px 56px; }
+  .hero .wrap { display: flex; flex-direction: column; gap: 18px; }
+  .hero-text { display: contents; }
+  .hero-text > .label { order: 1; }
+  .hero-text > h1 { order: 2; }
+  .escena { order: 3; margin: 4px 0 6px; }
+  .hero-text > .lead { order: 4; }
+  .hero-text > .ctas { order: 5; }
+  .hero-text > .hero-phone { order: 6; }
+  .hero .wrap { align-items: stretch; }
+  .hero-text > .label { align-self: flex-start; }
+  .escena { display: flex; flex-direction: column; align-items: center; margin-inline: -10px; }
+  .cocina { margin: -4% 0 -2%; }
+  .pie { margin-top: 0; font-size: .62rem; height: auto; min-height: 1.4em; width: 100%; }
+  .pie span { position: static; display: block; }
+  .pie-plano { display: none !important; }
+  .repetir { position: static; margin-top: 10px; font-size: .68rem; padding: 7px 12px; }
+}
+@media (max-width: 560px) {
+  header .wrap { padding-block: 10px; gap: 8px 12px; }
+  .brand .logo { height: 40px; }
+  .brand b { font-size: 1.1rem; }
+  nav { width: 100%; overflow-x: auto; scrollbar-width: none; }
+  nav::-webkit-scrollbar { display: none; }
+  nav ul { flex-wrap: nowrap; gap: 16px; white-space: nowrap; }
+  nav a { font-size: .85rem; }
+  nav li:has(.ig) { display: none; }
+  .hero h1 { font-size: clamp(2rem, 9.2vw, 2.6rem); }
+  .hero .label { font-size: .68rem; }
+  .ctas .btn { flex: 1 1 auto; text-align: center; }
+}
 </style>
 </head>
 <body>
