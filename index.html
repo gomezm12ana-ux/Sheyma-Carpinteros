@@ -305,6 +305,8 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
 @property --pos { syntax: '<percentage>'; inherits: true; initial-value: 92%; }
 .marco { --pos: 92%; position: relative; display: block; width: 100%; cursor: ew-resize; touch-action: pan-y; border-radius: 6px;
   -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; transition: --pos .7s cubic-bezier(.65,0,.25,1); }
+.marco:not(.listo) { cursor: default; }
+.marco:not(.listo) .foto { visibility: hidden; }
 .marco.siguiendo { transition: --pos .14s linear; }
 .marco.arrastrando { transition: none; }
 .marco:focus-visible { outline: 2px solid #E0A86E; outline-offset: 6px; }
@@ -593,7 +595,11 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
     }
     function desde(e) { var r = foto.getBoundingClientRect(); return (e.clientX - r.left) / r.width * 100; }
     function tocar() { marco.classList.add("tocado"); }
+    // No se puede deslizar hasta que termina el montaje de la cocina
+    var listo = false;
+    setTimeout(function () { listo = true; marco.classList.add("listo"); }, quieto ? 0 : 2400);
     marco.addEventListener("pointermove", function (e) {
+      if (!listo) return;
       if (e.pointerType === "mouse") { tocar(); marco.classList.add("siguiendo"); poner(desde(e)); return; }
       if (abajo === null) return;
       if (!movido && Math.abs(e.clientX - abajo) < 6) return;
@@ -603,7 +609,7 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
       if (e.pointerType === "mouse") { marco.classList.remove("siguiendo"); poner(REPOSO); }
     });
     marco.addEventListener("pointerdown", function (e) {
-      if (e.pointerType === "mouse") return;
+      if (!listo || e.pointerType === "mouse") return;
       abajo = e.clientX; movido = false; tocar();
     });
     function soltar() {
@@ -614,6 +620,7 @@ footer b { color: var(--band-fg); font-family: var(--font-display); }
     marco.addEventListener("pointerup", soltar);
     marco.addEventListener("pointercancel", function () { abajo = null; movido = false; marco.classList.remove("arrastrando"); });
     marco.addEventListener("keydown", function (e) {
+      if (!listo) return;
       if (e.key === "ArrowLeft") { tocar(); poner(pos - 10); e.preventDefault(); }
       else if (e.key === "ArrowRight") { tocar(); poner(pos + 10); e.preventDefault(); }
       else if (e.key === "Enter" || e.key === " ") { tocar(); poner(pos > 50 ? 0 : REPOSO); e.preventDefault(); }
